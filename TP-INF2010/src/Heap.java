@@ -23,46 +23,53 @@ public class Heap<ValueType extends Comparable<? super ValueType>> implements It
             // Ne pas modifier ces lignes
 
             /* TODO Ajouter une ligne de code pour construire le heap */
-
+            this.buildHeap();
         }
 
         /* TODO Implementer le compare pour un MaxHeap et MinHeap */
         protected boolean compare(ValueType first, ValueType second){
-            return false;
+            return first < second;
         }
 
         /* TODO Retourner l'index du parent */
         public int parentIndex(int index){
-            return -1;
+            return Math.floor(index / 2);
         }
 
         /* TODO Retourner l'enfant gauche du noeud */
         public int leftChildIndex(int index){
-            return -1;
+            return index * 2;
         }
 
         /* TODO Retourner l'enfant droit du noeud */
         public int rightChildIndex(int index){
-            return -1;
+            return index * 2 + 1;
         }
 
         /* TODO Retourner si l'index present est une feuille */
-        public boolean isLeaf(int pos)
-        {
-            return false;
-        }
+        public boolean isLeaf(int pos) { return pos * 2 > size(); }
 
         /* TODO Constuire le monceau avec les noeuds dans "elements" */
-        public void buildHeap(){
+        public void buildHeap(){ // O(NlogN)
+            for (int i = 0; i < size(); i++) {
+                percolateDown(i);
+            }
         }
 
         /* TODO Echanger les elements qui se retrouve aux indexes currentIndex et parentIndex */
         private void swap(int currentIndex, int parentIndex)
         {
+            Anytype tmp = elements.get(currentIndex);
+            elements.set(currentIndex, elements.get(parentIndex));
+            elements.set(parentIndex, tmp);
         }
 
         /* TODO Ajouter un element dans le monceaux. */
         public void insert(ValueType value){
+
+            for (; hole > 1 && value.compareTo(elements[hole / 2]) < 0 ; hole /= 2)
+                elements.set(hole, elements.get(hole/2));
+            elements.set(hole, value);
         }
 
         /* TODO Completer l'implementation des conditions de percolateDown pour un heap */
